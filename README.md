@@ -22,10 +22,6 @@ Cosmic Defender is a classic arcade-style space shooter game built with vanilla 
 - **Desktop**: 
   - Move: Arrow keys or WASD
   - Shoot: Spacebar
-- **Mobile**: 
-  - Touch controls appear automatically
-  - Directional pad for movement
-  - Fire button for shooting
 
 ### Objective 🌠
 - Shoot down enemy ships to earn points
