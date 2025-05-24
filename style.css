@@ -1,0 +1,312 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 600px;
+    border: 2px solid #4a90e2;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+    overflow: hidden;
+}
+
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0a0a2a, #1a1a4a, #2a2a6a, #3a3a8a);
+    z-index: 10;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Add stars to the background */
+#game-area::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    background-size: 
+        550px 550px,
+        350px 350px,
+        250px 250px;
+    background-position: 
+        0 0,
+        40px 60px,
+        130px 270px;
+    z-index: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #ff9900;
+    text-shadow: 0 0 10px #4a90e2, 0 0 20px #ff00ff;
+    text-align: center;
+    letter-spacing: 2px;
+    animation: titleGlow 2s infinite alternate;
+}
+
+@keyframes titleGlow {
+    from {
+        text-shadow: 0 0 10px #4a90e2, 0 0 20px #ff00ff;
+    }
+    to {
+        text-shadow: 0 0 15px #4a90e2, 0 0 30px #ff00ff, 0 0 40px #00ffff;
+    }
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.btn {
+    background: linear-gradient(to right, #4a90e2, #6a5acd);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #6a5acd, #ff00ff);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(106, 90, 205, 0.7), 0 0 30px rgba(255, 0, 255, 0.4);
+}
+
+.instructions {
+    margin: 20px 0;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(20, 20, 50, 0.7));
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%;
+    border: 2px solid #4a90e2;
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.5), inset 0 0 10px rgba(106, 90, 205, 0.3);
+}
+
+.instructions h2 {
+    color: #ff9900;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px rgba(255, 153, 0, 0.5);
+}
+
+.instructions p {
+    color: #ffffff;
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.instructions p:last-child {
+    color: #00ffff;
+    font-weight: bold;
+    margin-top: 15px;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.instructions p {
+    margin: 8px 0;
+}
+
+.sound-on::after {
+    content: "";
+}
+
+.sound-off::after {
+    content: "";
+}
+
+#game-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #0a0a2a, #1a1a4a);
+    background-size: 100% 200%;
+    animation: scrollBackground 20s linear infinite;
+    overflow: visible; /* Ensure elements aren't clipped */
+}
+
+@keyframes scrollBackground {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 100%;
+    }
+}
+
+.game-stats {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 1.2rem;
+    z-index: 5;
+}
+
+/* Game elements */
+.player {
+    position: absolute;
+    z-index: 5;
+    background-color: transparent;
+}
+
+.player.moving {
+    animation: playerHover 0.5s infinite alternate;
+}
+
+@keyframes playerHover {
+    from {
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+.bullet {
+    position: absolute;
+    width: 5px;
+    height: 15px;
+    background-color: #ff0;
+    border-radius: 2px;
+    z-index: 1;
+    box-shadow: 0 0 5px #ff0;
+    pointer-events: none; /* Ensure bullets don't interfere with other elements */
+}
+
+.enemy {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ff4d4d;
+    clip-path: polygon(50% 0%, 80% 40%, 100% 40%, 100% 70%, 80% 70%, 50% 100%, 20% 70%, 0% 70%, 0% 40%, 20% 40%);
+    z-index: 1;
+}
+
+.explosion {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #ffff00, #ff8800, #ff4400, transparent);
+    border-radius: 50%;
+    z-index: 3;
+    animation: explode 0.5s forwards;
+}
+
+@keyframes explode {
+    0% {
+        opacity: 1;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 800px) {
+    .game-container {
+        height: 500px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        padding: 0 15px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    .instructions {
+        padding: 15px;
+        max-width: 85%;
+    }
+    
+    .instructions p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .game-container {
+        height: 400px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        padding: 0 10px;
+    }
+    
+    .game-stats {
+        font-size: 1rem;
+    }
+    
+    .instructions {
+        padding: 10px;
+        max-width: 90%;
+    }
+    
+    .instructions p {
+        font-size: 0.9rem;
+        margin: 5px 0;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        margin: 5px 0;
+    }
+    
+    #start-screen {
+        padding: 10px;
+    }
+}
+
+
+
+
